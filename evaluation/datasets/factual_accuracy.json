@@ -1,0 +1,44 @@
+[
+  {
+    "agent": "seo",
+    "issue_contains": "Broken links",
+    "evidence_metric": "broken_links",
+    "evidence_source": "website_crawl"
+  },
+  {
+    "agent": "seo",
+    "issue_contains": "Missing meta description",
+    "evidence_metric": "meta_description_length",
+    "evidence_source": "website_crawl"
+  },
+  {
+    "agent": "seo",
+    "issue_contains": "Slow LCP",
+    "evidence_metric": "lcp_ms",
+    "evidence_source": "pagespeed_metrics"
+  },
+  {
+    "agent": "ads",
+    "issue_contains": "High CPA",
+    "evidence_metric": "cpa_usd",
+    "evidence_source": "google_ads"
+  },
+  {
+    "agent": "ads",
+    "issue_contains": "Low ROAS",
+    "evidence_metric": "roas",
+    "evidence_source": "meta_ads"
+  },
+  {
+    "agent": "ecommerce",
+    "issue_contains": "Stock-out risk",
+    "evidence_metric": "inventory_level",
+    "evidence_source": "product_catalog"
+  },
+  {
+    "agent": "analytics",
+    "issue_contains": "Conversion rate declining",
+    "evidence_metric": "conversion_rate",
+    "evidence_source": "ga_sessions"
+  }
+]

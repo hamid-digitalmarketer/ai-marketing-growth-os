@@ -1,0 +1,15 @@
+services:
+  growth-os:
+    build:
+      context: ..
+      dockerfile: ai-marketing-growth-os/infra/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      AI_MARKETING_PROVIDER: mock
+      GROWTH_OS_DATA_DIR: /app/data/sample_data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

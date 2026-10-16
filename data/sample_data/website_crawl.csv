@@ -1,0 +1,6 @@
+url,title,h1_count,meta_description_length,has_meta_description,word_count,broken_links,missing_alt_images,load_speed_ms,indexable
+https://shop.example.com/,Acme Home Store,1,145,true,2200,0,2,1800,true
+https://shop.example.com/products,Products | Acme,1,0,false,410,3,5,3200,true
+https://shop.example.com/products/sofa,Classic Sofa | Acme,2,138,true,1500,0,1,2400,true
+https://shop.example.com/blog/buying-guide,Buying Guide,1,98,true,1800,1,0,2100,true
+https://shop.example.com/checkout,Checkout,0,0,false,60,0,0,1500,true

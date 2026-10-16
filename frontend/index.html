@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ai-marketing-growth-os · Dashboard</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-2: #334155;
+    --text: #e2e8f0; --muted: #94a3b8; --accent: #6366f1; --ok: #10b981; --warn: #f59e0b; --danger: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; }
+  header { padding: 1.2rem 1.6rem; border-bottom: 1px solid var(--panel-2); display: flex; justify-content: space-between; align-items: center; }
+  header h1 { font-size: 1.1rem; margin: 0; letter-spacing: .02em; }
+  .badge { color: var(--ok); border: 1px solid var(--ok); border-radius: 999px; padding: .2rem .7rem; font-size: .75rem; }
+  main { max-width: 1200px; margin: 0 auto; padding: 1.6rem; }
+  .toolbar { display: flex; gap: .6rem; margin-bottom: 1.2rem; }
+  button { background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: .55rem 1.1rem; font-size: .85rem; cursor: pointer; }
+  button.secondary { background: var(--panel-2); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .8rem; margin-bottom: 1.4rem; }
+  .stat { background: var(--panel); border-radius: 12px; padding: .9rem 1rem; }
+  .stat .k { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; }
+  .stat .v { font-size: 1.4rem; margin-top: .3rem; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border-radius: 12px; padding: 1rem; margin-bottom: .8rem; }
+  .card h2 { font-size: .9rem; margin: 0 0 .8rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .rec { border-left: 3px solid var(--accent); padding-left: .8rem; margin-bottom: .9rem; }
+  .rec .issue { font-weight: 600; }
+  .rec .meta { color: var(--muted); font-size: .8rem; }
+  .rec .evidence { font-size: .8rem; color: var(--ok); }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  th, td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--panel-2); }
+  th { color: var(--muted); font-weight: 500; }
+  .pill { border-radius: 999px; padding: .15rem .6rem; font-size: .72rem; }
+  .pill.pending { background: #3b4252; color: var(--muted); }
+  .pill.approved { background: rgba(16,185,129,.15); color: var(--ok); }
+  .pill.rejected { background: rgba(239,68,68,.15); color: var(--danger); }
+  .pill.executed { background: rgba(99,102,241,.15); color: var(--accent); }
+  .pill.measured { background: rgba(245,158,11,.15); color: var(--warn); }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .8rem; }
+  .trace { border-top: 1px dashed var(--panel-2); padding-top: .5rem; margin-top: .5rem; font-size: .8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>ai-marketing-growth-os <span class="badge">demo mode · zero API keys</span></h1>
+  <div><span id="provider" class="mono">mock</span></div>
+</header>
+<main>
+  <div class="toolbar">
+    <button id="runBtn">Run full pipeline</button>
+    <button id="refreshBtn" class="secondary">Refresh</button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="grid">
+    <section>
+      <div class="card">
+        <h2>Recommendations (unified plan)</h2>
+        <div id="recs">Run the pipeline to see evidence-backed recommendations.</div>
+      </div>
+    </section>
+    <section>
+      <div class="card">
+        <h2>Approval queue</h2>
+        <table><thead><tr><th>ID</th><th>Agent</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="queue"></tbody></table>
+      </div>
+      <div class="card">
+        <h2>Trace viewer</h2>
+        <div id="traces">No runs yet.</div>
+      </div>
+    </section>
+  </div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const pills = { pending: 'pending', approved: 'approved', rejected: 'rejected', executed: 'executed', measured: 'measured' };
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, opts);
+  if (!res.ok) throw new Error((await res.text()).slice(0, 200));
+  return res.json();
+}
+
+async function runPipeline() {
+  const data = await api('/api/demo/run', { method: 'POST' });
+  $('provider').textContent = data.provider + ' · $' + data.cost_usd.toFixed(2);
+  render();
+}
+
+async function render() {
+  const [queue, plan, runs] = await Promise.all([api('/api/queue'), api('/api/plan'), api('/api/runs')]);
+  const stats = queue.stats;
+  $('stats').innerHTML = Object.entries(stats).map(([k, v]) =>
+    `<div class="stat"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+
+  const recs = plan.plan ? plan.plan.recommendations : [];
+  $('recs').innerHTML = recs.length
+    ? recs.map(r => `
+      <div class="rec">
+        <div class="issue">[${r.priority}] ${r.agent}: ${r.issue}</div>
+        <div class="meta">${r.proposed_action} · impact ${r.expected_impact} · effort ${r.effort}</div>
+        <div class="evidence">${r.evidence.map(e => `${e.source} · ${e.metric}=${e.value}`).join(' | ')}</div>
+      </div>`).join('')
+    : 'Run the pipeline to see evidence-backed recommendations.';
+
+  $('queue').innerHTML = queue.items.map(i => `
+    <tr>
+      <td class="mono">${i.id.slice(0, 8)}</td><td>${i.recommendation_id}</td>
+      <td><span class="pill ${pills[i.status]}">${i.status}</span></td>
+      <td>${i.status === 'pending'
+        ? `<button class="secondary" onclick="decide('${i.id}', true)">Approve</button>
+           <button class="secondary" onclick="decide('${i.id}', false)">Reject</button>` : ''}
+      </td>
+    </tr>`).join('') || '<tr><td colspan="4">Queue is empty.</td></tr>';
+
+  $('traces').innerHTML = runs.runs.length
+    ? runs.runs.map(run => `
+      <div class="trace"><strong>${run.agent}</strong> · ${run.tool_calls.length} tool calls · ${run.latency_ms}ms ·
+        ${run.recommendations.length} recs</div>`).join('')
+    : 'No runs yet.';
+}
+
+async function decide(id, approve) {
+  await api(`/api/queue/${id}/decide`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ approve, approver: 'dashboard-user' }) });
+  render();
+}
+
+$('runBtn').addEventListener('click', runPipeline);
+$('refreshBtn').addEventListener('click', render);
+render().catch(() => {});
+</script>
+</body>
+</html>

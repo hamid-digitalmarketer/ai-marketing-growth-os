@@ -1,0 +1,5 @@
+{
+  "max_cost_usd": 0.0,
+  "max_latency_ms": 5000,
+  "max_tool_calls_per_run": 12
+}

@@ -1,0 +1,10 @@
+{
+  "required_tool_calls": {
+    "seo": ["fetch_website_crawl", "fetch_gsc_keywords", "fetch_pagespeed"],
+    "ads": ["fetch_google_ads", "fetch_meta_ads"],
+    "ecommerce": ["fetch_product_catalog"],
+    "analytics": ["fetch_ga_sessions", "fetch_gsc_keywords"]
+  },
+  "max_failed_calls": 0,
+  "min_calls_per_agent": 1
+}

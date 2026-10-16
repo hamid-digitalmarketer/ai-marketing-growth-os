@@ -1,0 +1,6 @@
+campaign,channel,spend_usd,impressions,clicks,ctr,cpa_usd,target_cpa_usd,roas,conversions,status
+Brand Search,search,4200,180000,9200,0.0511,28.0,40.0,4.1,150,active
+Generic Sofa KW,search,6800,240000,6600,0.0275,72.0,45.0,1.6,94,active
+Shopping - Home,shopping,9100,320000,3100,0.0097,54.0,50.0,2.0,169,active
+Remarketing,display,3500,410000,2300,0.0056,88.0,45.0,0.9,40,active
+YouTube Awareness,video,2800,900000,1500,0.0017,120.0,60.0,0.6,23,paused

@@ -1,0 +1,9 @@
+sku,name,category,price_usd,avg_category_price_usd,inventory_level,reorder_point,backordered,out_of_stock_days,views_last_30d,sales_last_30d,conversion_rate
+SKU-001,Classic Sofa,furniture,899,780,4,12,true,6,12000,240,0.020
+SKU-002,Accent Chair,furniture,349,330,18,8,false,0,5400,130,0.024
+SKU-003,Coffee Table,furniture,259,300,40,15,false,0,3800,98,0.026
+SKU-004,LED Floor Lamp,lighting,129,115,60,20,false,0,2900,110,0.038
+SKU-005,Smart Bulb 2-pack,lighting,39,45,200,80,false,0,6100,305,0.050
+SKU-006,Cotton Throw,textiles,59,55,90,30,false,0,3300,99,0.030
+SKU-007,Memory Foam Mattress,furniture,1299,1150,7,10,true,4,8900,120,0.013
+SKU-008,Standing Desk,furniture,649,680,25,8,false,0,4600,110,0.024

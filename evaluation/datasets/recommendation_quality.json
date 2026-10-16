@@ -1,0 +1,6 @@
+{
+  "required_fields": ["issue", "proposed_action", "expected_impact", "next_steps"],
+  "min_evidence_per_rec": 1,
+  "min_unique_recs": 8,
+  "agents_present": ["seo", "ads", "ecommerce", "analytics"]
+}

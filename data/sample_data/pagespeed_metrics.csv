@@ -1,0 +1,6 @@
+url,lighthouse_performance,lcp_ms,tbt_ms,cls,total_bytes_kb
+https://shop.example.com/,0.82,1800,320,0.02,1400
+https://shop.example.com/products,0.61,3200,980,0.12,2100
+https://shop.example.com/products/sofa,0.74,2400,410,0.04,1650
+https://shop.example.com/blog/buying-guide,0.79,2100,260,0.01,1200
+https://shop.example.com/checkout,0.88,1500,150,0.0,950
