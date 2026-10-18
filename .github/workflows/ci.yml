@@ -81,7 +81,7 @@ jobs:
           pip install -e ".[dev]"
       - name: Run evaluation suite
         run: |
-          pytest evaluation/ -q
+          pytest evaluation/ -q -o addopts=""
           python -m evaluation.run
 
   docker:
